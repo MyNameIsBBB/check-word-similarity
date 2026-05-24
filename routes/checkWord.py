@@ -1,6 +1,8 @@
 from fastapi import APIRouter, Body, HTTPException, Query
 
 from models.check_word import CheckWordRequest, CheckWordResponse
+from models.element import ElementRequest, ElementResponse
+from modules.element_classifier import classify_element
 from modules.semantic_similarity import MODEL_NAME, calculate_similarity
 
 
@@ -47,3 +49,12 @@ def check_word_similarity(
 		status_code=400,
 		detail="Send word1 and word2 in JSON body or query parameters",
 	)
+
+
+@router.post("/element", response_model=ElementResponse)
+def check_word_element(payload: ElementRequest) -> ElementResponse:
+	clean_word = payload.word.strip()
+	if not clean_word:
+		raise HTTPException(status_code=400, detail="word is required")
+
+	return ElementResponse(element=classify_element(clean_word))

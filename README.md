@@ -27,6 +27,7 @@ py -m uvicorn main:app --reload
 - `GET /api/hello/{name}`
 - `GET /api/check-word/similarity?word1=cat&word2=kitten`
 - `POST /api/check-word/similarity`
+- `POST /api/check-word/element`
 
 ## Semantic similarity API
 
@@ -62,13 +63,33 @@ Example response:
 {
   "word1": "cat",
   "word2": "kitten",
-  "model": "sentence-transformers/all-MiniLM-L6-v2",
   "similarity_score": 0.82,
   "similarity_percent": 82.0
 }
 ```
 
 The first request may take longer because the model is downloaded from Hugging Face.
+
+## Element API
+
+This endpoint classifies a word into one simple element:
+`earth`, `water`, `wind`, `fire`, `light`, or `dark`.
+
+Example POST body:
+
+```json
+{
+  "word": "river"
+}
+```
+
+Example response:
+
+```json
+{
+  "element": "water"
+}
+```
 
 Interactive docs:
 
